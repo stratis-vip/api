@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+// const bcrypt = require('bcrypt')
 
 const checkUser = (uname, psswd) => {
   return uname === "admin" && psswd === "admin" ? true : false;
@@ -28,12 +28,12 @@ const checkLoggedIn = (req, res, next) => {
   }
 };
 
-const crypt =(p) =>{
-    return bcrypt.hashSync(p,10)
-}
+// const crypt =(p) =>{
+//     return bcrypt.hashSync(p,10)
+// }
 module.exports = {
   login: login,
   checkLoggedIn: checkLoggedIn,
   logout: logout,
-  crypt: crypt
+  // crypt: crypt
 };
