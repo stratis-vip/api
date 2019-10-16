@@ -4,13 +4,14 @@ const exphbs = require("express-handlebars");
 const browserify = require("browserify-middleware");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+// const bodyParser = require('body-parser');
 const logger = require("morgan");
 const cors = require("cors");
 const apiRouter = require("./routes/testApi");
-const loginRouter = require("./routes/login");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+const aboutRouter = require('./routes/about')
 const session = require("express-session");
 const { login, checkLoggedIn, logout } = require("./scripts/auth");
 
@@ -35,25 +36,32 @@ app
     })
   )
 
+
   .use(express.json())
   .use(express.urlencoded({ extended: false }))
   .use(cookieParser())
   .use(express.static(path.join(__dirname, "public")))
 
-  .use("/", checkLoggedIn, indexRouter)
+
   .use("/users", checkLoggedIn, usersRouter)
-  .use("/api", checkLoggedIn, apiRouter)
-  .use("/login", login, loginRouter)
+  .use('/api', checkLoggedIn, apiRouter)
+  .use("/about", checkLoggedIn, aboutRouter)
+  .use("/logout", logout, indexRouter)
+  .use("/login", login, indexRouter)
+  
+  .use("/", checkLoggedIn, indexRouter)
+
+
 
   // catch 404 and forward to error handler
   .use(function(req, res, next) {
-    next(createError(404));
+    next(createError(404))
   })
 
   // error handler
   .use(function(err, req, res, next) {
     // set locals, only providing error in development
-    res.locals.message = err.message;
+    res.locals.message = err.message
     res.locals.error = req.app.get("env") === "development" ? err : {};
 
     // render the error page

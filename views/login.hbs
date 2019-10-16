@@ -1,2 +1,32 @@
-<div>{{title}}</div>
-<div>{{error}}</div>
+<div class="wrapper">
+    <div class="form-signin">
+        <h1>{{title}}</h1>
+        {{#if error }}
+        <div class="alert alert-danger" role='alert'>{{error}}</div>
+        {{/if}}
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label for="username">Όνομα μέλους</label>
+                <input class="form-control" type="text" name="username" placeholder="Όνομα μέλους" autofocus />
+            </div>
+            <div class="form-group">
+                <label for="password">Κωδικός πρόσβασης</label>
+                <input class="form-control" type="password" name="password" placeholder="Κωδικός πρόσβασης" />
+            </div>
+            <div class="form-group">
+                <div>
+                    <a href="/about">Σχετικά με τον διακομιστή προπονήσεων</a>
+                    <div class="text-right">
+                        {{!-- <label class="form-check-label">Remember me</label>
+                        <input type="checkbox" /> --}}
+                        <div class="form-group">
+                            <div class="text-right">
+                                <input class="btn btn-primary" type="submit" value="Σύνδεση" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
