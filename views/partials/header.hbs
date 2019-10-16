@@ -1,1 +1,22 @@
-<h1>{{title}}</h1>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/"><strong>Διακομιστής Προπονήσεων</strong></a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Αρχική</a></li>
+            {{#if isLogged}}
+            <li><a href="/api">Πληροφορίες API</a></li>
+            {{/if}}
+            <li><a href="/about">Σχετικά</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            {{#if isLogged}}
+            <li><a href="/user"><span class="glyphicon glyphicon-user"></span> {{username}}</a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Αποσύνδεση</a></li>
+            {{else}}
+            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Σύνδεση</a></li>
+            {{/if}}
+        </ul>
+    </div>
+</nav>
