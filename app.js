@@ -1,5 +1,7 @@
 const createError = require('http-errors')
 const express = require('express')
+const exphbs = require('express-handlebars');
+const browserify = require('browserify-middleware')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
@@ -13,10 +15,11 @@ const app = express()
 
 // view engine setup
 app
-.set('views', path.join(__dirname, 'views'))
-.set('view engine', 'jade')
+app.engine("hbs", exphbs({ extname: ".hbs", defaultLayout: "layout" }))
+app.set("view engine", "hbs")
 
 .use(cors())
+.get('/javascripts/bundle.js', browserify('./client/script.js'))
 .use(logger('dev'))
 .use(express.json())
 .use(express.urlencoded({ extended: false }))
