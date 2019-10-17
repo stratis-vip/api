@@ -10,9 +10,14 @@ a {
 body {
   background: Gainsboro; /* full background lightest grey */
 }
-.wrapper {
-  margin: 10% 0; /* margin top and bottom */
+.light {
+  background-color: white;
 }
+
+.dark {
+  background-color: yellow;
+}
+
 .form-signin {
   background: White; /* white background */
   max-width: 60%; /* limit width */

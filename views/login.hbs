@@ -1,6 +1,7 @@
-<div class="wrapper">
-    <div class="form-signin">
-        <h1>{{title}}</h1>
+<div class="container-fluid">
+    <div class="col-xs-2 col-md-4 dark">&nbsp;</div>
+    <div class="col-xs-8 col-md-4 light">
+        <h3 class="text-center">{{title}}</h3>
         {{#if error }}
         <div class="alert alert-danger" role='alert'>{{error}}</div>
         {{/if}}
@@ -14,19 +15,13 @@
                 <input class="form-control" type="password" name="password" placeholder="Κωδικός πρόσβασης" />
             </div>
             <div class="form-group">
-                <div>
-                    <a href="/about">Σχετικά με τον διακομιστή προπονήσεων</a>
-                    <div class="text-right">
-                        {{!-- <label class="form-check-label">Remember me</label>
-                        <input type="checkbox" /> --}}
-                        <div class="form-group">
-                            <div class="text-right">
-                                <input class="btn btn-primary" type="submit" value="Σύνδεση" />
-                            </div>
-                        </div>
+                <div class="form-group">
+                    <div class="text-center">
+                        <input class="btn btn-primary" type="submit" value="Σύνδεση" />
                     </div>
                 </div>
             </div>
         </form>
     </div>
+    <div class="col-xs-2 col-md-4 dark">&nbsp;</div>
 </div>
