@@ -24,3 +24,12 @@ body {
   margin: 0 auto; /* center */
   padding: 2%;
 }
+
+pre {
+  font-family: monospace;
+}
+
+.fitContent{
+  min-width:fit-content;
+  width:70%;
+}

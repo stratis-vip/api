@@ -1,4 +1,62 @@
 <div>
-    <p>{{title}}</p>
-    <p>{{text}}</p>
+    <h3>{{title}}</h3>
+    <div>
+        <ul>
+            <li>
+                <h4>Γενικά</h4>
+            </li>
+            <ul>
+                <li>Οι απαντήσεις από τον διακομιστή δίνονται στην μορφή <i>jsend:</i>
+                    <pre class="fitContent">{
+    "status": "fail",
+    "data": {
+        "title": "'w' is not a number"
+    }
+}</pre>
+                    Λεπτομέρειες <a href="https://github.com/omniti-labs/jsend">εδώ</a>.
+                </li>
+                <li>Όλες οι αιτήσεις πρέπει να συμπεριλαμβάνουν την τιμή <code>secret=&lt;secretvalue&gt;</code>. Σε
+                    άλλη περίπτωση ο διακομιστής θεωρεί ότι έχει γίνει είσοδος από το web και ανακατευθύνει στην σελίδα
+                    login.</li>
+            </ul>
+            <li>
+                <h4>Αιτήσεις GET</h4>
+            </li>
+            <ul>
+                <li><strong>users/</strong> Επιστρέφει όλα τα μέλη με τη μορφή
+                    <pre class="fitContent">{
+    "status": "success",
+    "data": [
+                {
+                    "id": 1,
+                    "name": "username",
+                    "email": "user@mail.com",
+                    "pass": null
+                },
+                ...
+            ]
+}</pre>
+                </li>
+                <li><strong>users/id</strong> Επιστρέφει το μέλος με id = {id} (ακέραιος αριθμός)</li>
+            </ul>
+            <li><h4>Αιτήσεις POST</h4></li>
+            <ul>
+                <li><strong>users/</strong> Δημιουργεί το μέλος. Η αίτηση πρέπει να συμπεριλαμβάνει τα παρακάτω:
+                    <pre class="fitContent">name= string (διάφορο του κενού)
+email= string (μορφή email@mail.com)
+password = string (το λιγότερο 4 χαρακτήρες)</pre>
+                </li>
+                <li><strong>users/id</strong> Τροποποιεί το μέλος με id=&lt;id&gt;. Η αίτηση πρέπει να περιλαμβάνει τα
+                    παρακάτω:
+                    <pre class="fitContent">name= string (διάφορο του κενού)
+email= string (μορφή email@mail.com)</pre>
+                    <div class="alert alert-danger fitContent">Τονίζεται ότι το password δεν τροποποιείται!</div>
+                </li>
+            </ul>
+            <li><h4>Αιτήσεις DELETE</h4></li>
+            <ul>
+                <li><strong>users/id</strong> Διαγράφει το μέλος με id=&lt;id&gt;. </li>
+            </ul>
+        </ul>
+    </div>
 </div>

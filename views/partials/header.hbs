@@ -12,7 +12,9 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             {{#if isLogged}}
+            {{#if username}}
             <li><a href="/user"><span class="glyphicon glyphicon-user"></span> {{username}}</a></li>
+            {{/if}}
             <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Αποσύνδεση</a></li>
             {{else}}
             <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Σύνδεση</a></li>
