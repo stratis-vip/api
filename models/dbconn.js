@@ -1,6 +1,9 @@
+require('dotenv').config()
 const mysql = require("mysql");
+let Cons = []
 
-const connection = mysql.createConnection({
+const pool  = mysql.createPool({
+  connectionLimit : 10,
   host: "localhost",
   port: 3306,
   user: process.env.DB_USER || "",
@@ -9,6 +12,16 @@ const connection = mysql.createConnection({
   insecureAuth: true
 });
 
-connection.connect();
+// pool.on('acquire', function (connection) {
+//   console.log('Connection %d acquired', connection.threadId);
+//   Cons.push(connection.threadId)
+//   console.log(Cons)
+// });
 
-module.exports = connection;
+// pool.on('release', function (connection) {
+//   console.log('Connection %d released', connection.threadId);
+//   Cons=Cons.filter(val => val != connection.threadId)
+//   console.log(Cons)
+// });
+
+module.exports = pool

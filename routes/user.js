@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
     isLogged: isLogged(req),
     username: req.session.username
   });
+ 
 });
 
 module.exports = router;
