@@ -1,27 +1,35 @@
-const pool = require("./dbconn");
+const mainConfig = require("./config");
+const db = require('./db')
+let pool =null
 const { crypt } = require("../scripts/auth");
-const { createResponse, createFail } = require("../models/apiFunctions");
+const { createResponse, createFail, createError, status} = require("../models/apiFunctions");
 
 module.exports = class User {
-  id;
-  error = null;
-  constructor(name, email, pass) {
+  constructor(config, name, email, pass) {
+    this.id = null
+    this.error = null
     this.name = name;
     this.email = email;
     this.pass = pass;
+    if (config === null) {
+      pool = new db(mainConfig)
+    } else {
+      pool = new db(config)
+    }
   }
 
   save() {
     return new Promise(resolve => {
       if (checkIfUserIsValid(this)) {
-        let msg = null;
         pool.query(
           "INSERT INTO users (name, email, psy) VALUES (?, ?, ?)",
-          [this.name, this.email, crypt(this.pass)],
-          (err, res) => {
-            resolveResponse(err, { id: parseInt(res.insertId) }, resolve);
-          }
-        );
+          [this.name, this.email, crypt(this.pass)])
+          .then(
+            (results) => {
+              resolveResponse(null, {status: status.success}, resolve);
+            }
+          )
+          .catch(err=>resolveErrorResponse(err,resolve))
       } else {
         resolveFailResponse(`Δεν είναι πλήρη τα στοιχεία του μέλους: ${this.error}`, resolve)
       }
@@ -48,14 +56,15 @@ module.exports = class User {
   }
 
   getUserById(id) {
-    return new Promise(resolve => {
+    return new Promise((resolve,reject) => {
       if (isNaN(parseInt(id))) {
-        resolveFailResponse(`'${id}' is not a number`, resolve)
+        resolveFailResponse(`'${id}' is not a number`, reject)
       } else {
         let queryString = "SELECT id, name, email FROM users WHERE id = ?";
         let finalId = id !== null ? parseInt(id) :parseInt(this.id)
-        pool.query(queryString,[finalId], (err, result) => {
-          let data = [];
+        let data = []
+        pool.query(queryString,[finalId])
+        .then(result => {
           if (result.length !== 0) {
             for (let i = 0; i != result.length; i++) {
               data.push({
@@ -65,9 +74,14 @@ module.exports = class User {
                 pass: null
               });
             }
-          }
+            resolveResponse(null,data,resolve)
+          }else {
+            resolveErrorResponse(`'Δεν υπάρχει μέλος με id = ${id}`, reject)}
+          
+        })
+        .catch(err =>{
           resolveResponse(err,data,resolve)
-        });
+        })
       }
     });
   }
@@ -88,6 +102,10 @@ module.exports = class User {
         );
       }
     });
+  }
+  
+  async close(){
+    await pool.close()
   }
 
   update(id, name, email) {
@@ -110,7 +128,7 @@ module.exports = class User {
                 rowsAffected: affectedRows,
                 rowsUpdated: changedRows
               };
-              resolveResponse(err, data, resolve);
+              resolveResponse(null, data, resolve);
             }
           );
         }
@@ -145,6 +163,12 @@ const resolveResponse = (err, dataObject, resolveFunction) => {
 
 const resolveFailResponse = (dataObject, resolveFunction) => {
   let msg = createFail();
+  msg.data.title = dataObject;
+  resolveFunction(msg);
+};
+
+const resolveErrorResponse = (dataObject, resolveFunction) => {
+  let msg = createError();
   msg.data.title = dataObject;
   resolveFunction(msg);
 };
