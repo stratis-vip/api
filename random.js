@@ -1,6 +1,8 @@
 //guess length of string 3 - 30
 const fs = require("fs");
 const path = require("path");
+const userNameLen = 16
+const mailLength = 14
 class Range {
   constructor(start, end, startInclusive = true, endInclusive = true) {
     if (isNaN(start)) start = 0;
@@ -97,7 +99,7 @@ function createRandomStringFromArray(len = 1, array) {
   let str = "";
   if (array.length === 0) return str;
   if (len < 1) return str;
-  if (len === 1) return String.fromCharCode(array[0]);
+  if (array.length === 1 && len === 1) return String.fromCharCode(array[0]);
   for (let _ = 0; _ != len; _++) {
     let ch = getRandomFromArray(array);
     str += String.fromCharCode(ch);
@@ -159,15 +161,22 @@ function createString(len, startFromLower = true, hasSpecial = false) {
   return str + createRandomStringFromArray(len - 1, randomRange);
 }
 
-function createUserName(mail = "@mail.com") {
-  return createString(30 - mail.length);
+function createUserCredentials(mail = "@mail.com", size = 30) {
+  let username = createString(size)
+  let email = username + mail
+  let pass = createString(getRandom(8,12),true,true)
+  return {
+    username:username,
+    email:email,
+    password:pass
+  }
 }
 
 const fileName = path.join(__dirname, "/free_email_provider_domains.txt");
 let emails = fs
   .readFileSync(fileName, { encoding: "utf8" })
   .split("\n")
-  .filter(val => val.length < 24);
+  .filter(val => val.length < mailLength);
 
 function getRandomEmail(emails) {
   let email = "mail.com";
@@ -185,5 +194,6 @@ module.exports = {
   intArrayFrom: intArrayFrom,
   createRandomString: createRandomString,
   createRandomStringFromArray: createRandomStringFromArray,
-  createString
+  createString,
+  createUserCredentials
 };

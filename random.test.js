@@ -5,7 +5,8 @@ const {
   intArrayFrom,
   createRandomString,
   createRandomStringFromArray,
-  createString
+  createString,
+  createUserCredentials
 } = require("./random");
 
 describe("Έλεγχος getRandom", () => {
@@ -56,7 +57,7 @@ describe("Έλεγχος intArrayFrom", () => {
     expect(intArrayFrom(1, 1)).toStrictEqual([1]);
   });
   it("Αν το τέλος είναι μικρότερο επιστρέφει [τέλος, αρχή]", () => {
-    expect(intArrayFrom(1, 0)).toStrictEqual([0,1]);
+    expect(intArrayFrom(1, 0)).toStrictEqual([0, 1]);
   });
   it("Αν η αρχή και το τέλος είναι ίδιο επιστρέφει κενό πίνακα (τα όρια δεν συμπεριλαμβάνονται)", () => {
     expect(intArrayFrom(1, 1, false, false)).toStrictEqual([]);
@@ -176,7 +177,7 @@ describe("Έλεγχος createRandomString", () => {
 
 describe("Έλεγχος createRandomStringFromArray", () => {
   it(`Επιστρέφει '' σε κενό πίνακα`, () => {
-    expect(createRandomStringFromArray(5, [])).toBe("")
+    expect(createRandomStringFromArray(5, [])).toBe("");
   });
   it(`Επιστρέφει '' σε μη κενό κενό πίνακα με len 0`, () => {
     expect(createRandomStringFromArray(0, [45])).toBe("");
@@ -204,35 +205,44 @@ describe("Έλεγχος createRandomStringFromArray", () => {
   });
 });
 
-describe('Έλεγχος createString', ()=>{
-    it(`Επιστρέφει γραμματοσειρά με 50 χαρακτήρες χωρίς special`, () => {
-        for (_ = 0; _ != 100; _++) {
-          let randString = createString(50, true, false);
-          expect(randString.length).toBe(50);
-          expect(
-            [...randString].filter(
-              val => { let v = val.charCodeAt()
-                 return ( v < 48 || v > 122 ) ||
-                 (v >57 && v < 65 ) || 
-                 (v >90 && v < 97 )
-                }
-            )
-          ).toStrictEqual([]);
-        }
-    })
-    it(`Επιστρέφει γραμματοσειρά με 50 χαρακτήρες με special`, () => {
-        for (_ = 0; _ != 100; _++) {
-          let randString = createString(50, true, true);
-          expect(randString.length).toBe(50);
-          expect(
-            [...randString].filter(
-              val => { let v = val.charCodeAt()
-                 return ( v < 48 || v > 122 ) ||
-                 (v >57 && v < 65 ) || 
-                 (v >90 && v < 97 )
-                }
-            )
-          ).not.toStrictEqual([]);
-        }
-    })
-})
+describe("Έλεγχος createString", () => {
+  it(`Επιστρέφει γραμματοσειρά με 50 χαρακτήρες χωρίς special`, () => {
+    for (_ = 0; _ != 100; _++) {
+      let randString = createString(50, true, false);
+      expect(randString.length).toBe(50);
+      expect(
+        [...randString].filter(val => {
+          let v = val.charCodeAt();
+          return v < 48 || v > 122 || (v > 57 && v < 65) || (v > 90 && v < 97);
+        })
+      ).toStrictEqual([]);
+    }
+  });
+  it(`Επιστρέφει γραμματοσειρά με 50 χαρακτήρες με special`, () => {
+    for (_ = 0; _ != 100; _++) {
+      let randString = createString(50, true, true);
+      expect(randString.length).toBe(50);
+      expect(
+        [...randString].filter(val => {
+          let v = val.charCodeAt();
+          return v < 48 || v > 122 || (v > 57 && v < 65) || (v > 90 && v < 97);
+        })
+      ).not.toStrictEqual([]);
+    }
+  });
+});
+
+describe("createUserCredentials", () => {
+  it("creates a user", () => {
+    for (_ = 0; _ != 100; _++) {
+      const opmail = "@operamail.com";
+      const ulen = 14;
+      let user = createUserCredentials(opmail, ulen);
+      expect(user).not.toBeNull();
+      expect(user.password.length > 7).toBeTruthy();
+      expect(user.password.length < 13).toBeTruthy();
+      expect(user.username.length).toBe(ulen);
+      expect(user.email.length).toBe(ulen + opmail.length);
+    }
+  });
+});

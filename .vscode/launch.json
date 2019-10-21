@@ -8,7 +8,7 @@
         "type": "node",
         "request": "launch",
         "name": "Launch Program",
-        "program": "${workspaceFolder}/te.js"
+        "program": "${workspaceFolder}/random.js"
     },
         {
             "type": "chrome",
