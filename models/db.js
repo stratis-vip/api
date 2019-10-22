@@ -1,8 +1,10 @@
 const mysql = require( 'mysql' );
-
+const mConfig = require('./config')
 class Database {
     constructor( config ) {
-        this.pool = mysql.createConnection( config );
+        if (config === undefined ) //default config
+        config = mConfig
+        this.pool = mysql.createPool( config );
     }
     query( sql, args ) {
         return new Promise(  resolve  => {
