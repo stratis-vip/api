@@ -1,8 +1,25 @@
 //guess length of string 3 - 30
 const fs = require("fs");
 const path = require("path");
-const userNameLen = 16
-const mailLength = 14
+const userNameLen = 16;
+const mailLength = 14;
+const nameF = path.join(__dirname, "/names.txt");
+let fNames = [], lNames=[]
+let namesA = fs.readFileSync(nameF, { encoding: "utf8" })
+.split("\n").map(val=>val.trim()).map(val => val.split(' ')).map(val =>{
+fNames.push(val[0])
+lNames.push(val[1])
+})
+
+const fileName = path.join(__dirname, "/free_email_provider_domains.txt");
+
+let emails = fs
+  .readFileSync(fileName, { encoding: "utf8" })
+  .split("\n")
+  .filter(val => val.length < mailLength);
+
+//   
+
 class Range {
   constructor(start, end, startInclusive = true, endInclusive = true) {
     if (isNaN(start)) start = 0;
@@ -89,8 +106,8 @@ function intArrayFromRange(rangeObj) {
 }
 
 function createRandomString(len = 1, start = -1, end = -1) {
-  if (end === -1 && start !== end) end = start
-  if ((start < 0 || start > 126) || (end < 0 || end > 126)) return "";
+  if (end === -1 && start !== end) end = start;
+  if (start < 0 || start > 126 || (end < 0 || end > 126)) return "";
   let array = intArrayFrom(start, end);
   return createRandomStringFromArray(len, array);
 }
@@ -162,22 +179,20 @@ function createString(len, startFromLower = true, hasSpecial = false) {
 }
 
 function createUserCredentials(mail = "@mail.com", size = 30) {
-  let username = createString(size)
-  let email = username + mail
-  let pass = createString(getRandom(8,12),true,true)
+  let username = `${getRandomFromArray(fNames)}_${getRandomFromArray(lNames)}`
+  //let username = createString(size);
+  let email = username + mail;
+  let pass = createString(getRandom(8, 12), true, true);
   return {
-    username:username,
-    email:email,
-    password:pass
-  }
+    username: username,
+    email: email,
+    password: pass
+  };
 }
 
-const fileName = path.join(__dirname, "/free_email_provider_domains.txt");
-let emails = fs
-  .readFileSync(fileName, { encoding: "utf8" })
-  .split("\n")
-  .filter(val => val.length < mailLength);
 
+
+console.log(fNames, lNames);
 function getRandomEmail(emails) {
   let email = "mail.com";
 
@@ -187,6 +202,7 @@ function getRandomEmail(emails) {
   return `@${email}`;
 }
 
+console.log(createUserCredentials(getRandomEmail(emails)))
 module.exports = {
   getRandom: getRandom,
   getRandomFromArray: getRandomFromArray,
