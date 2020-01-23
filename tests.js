@@ -1,43 +1,15 @@
-async function f() {
-  return 1;
+function inter() {
+  return new Promise(resolve => {
+    let a = 'ert'
+    setInterval(()=>resolve(a),1000)
+    
+  });
 }
 
-// f().then(a=>console.log(a))
-
-class Er {
-  check() {
-    return new Promise(res => {
-      setTimeout(() => {
-        res(5);
-      }, 1000);
-    });
-  }
-
-  async id() {
-    await this.check(ref => console.log(ref));
-    return b;
-  }
+function er() {
+  return new Promise((resolve, rejet) => {
+    let str = inter()//.then(r => resolve(r));
+    resolve( str)
+  });
 }
-
-let b = new Er();
-async () => {
-  let c;
-  await b.check(ref => (c = ref));
-
-  console.log(c);
-};
-console.log(b.id());
-
-const axios = require("axios").default;
-
-async function getApi() {
-  return await axios.get(
-    "http://localhost:9000/api/?secret=secretvalue"
-  );
-};
-
-(async ()=> {
-    const res = await getApi()
-    console.log (res.data)})()
-
-//console.log(brt)
+er().then(r=>console.log(r))
